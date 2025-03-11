@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    private Rigidbody rb;
+    private ScoreManager scoreManager;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rb = GetComponent<Rigidbody>();
+        scoreManager = FindObjectOfType<ScoreManager>();
+        if (rb != null)
+        {
+            // Set appropriate physics for a ball
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            rb.constraints = RigidbodyConstraints.FreezePositionZ;
+        }
+        else
+        {
+            Debug.LogError("No Rigidbody component found on " + gameObject.name);
+        }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter(Collider other)
     {
         // Goal detection logic
         if (other.CompareTag("Goal"))
@@ -27,11 +38,19 @@ public class BallController : MonoBehaviour
         bool playerOneScored = goal.name.Contains("PlayerTwoGoal");
         bool playerTwoScored = goal.name.Contains("PlayerOneGoal");
 
+        // Update score using ScoreManager
+        if (scoreManager != null)
+        {
+            scoreManager.AddScore(playerOneScored);
+        }
+
         // Reset ball position
         transform.position = Vector3.zero;
-        rb.velocity = Vector2.zero;
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+        }
 
-        // Update score (you'll need to implement a score tracking system)
         Debug.Log(playerOneScored ? "Player One Scores!" : "Player Two Scores!");
     }
 }
