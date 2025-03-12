@@ -1,7 +1,5 @@
-using Unity.Netcode;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -59,6 +57,16 @@ public class PlayerController : NetworkBehaviour
             if (IsServer)
             {
                 networkedPosition.Value = transform.position;
+            }
+
+            // Rotate player based on movement direction
+            if (horizontalInput > 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 100, 0);
+            }
+            else if (horizontalInput < 0)
+            {
+                transform.rotation = Quaternion.Euler(0, -100, 0);
             }
 
             // Jumping
