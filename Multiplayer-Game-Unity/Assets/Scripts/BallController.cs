@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+
 public class BallController : NetworkBehaviour
 {
     private Rigidbody rb;
@@ -25,32 +26,20 @@ public class BallController : NetworkBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // Goal detection logic
-        if (other.CompareTag("Goal"))
+        if (IsServer) // Ensure scoring logic is handled on the server
         {
-            GoalScored(other.gameObject);
-        }
-    }
+            if (other.CompareTag("RightGoal"))
+            {
+                scoreManager.AddScore(false); // Client scores
+            }
+            else if (other.CompareTag("LeftGoal"))
+            {
+                scoreManager.AddScore(true); // Host scores
+            }
 
-    void GoalScored(GameObject goal)
-    {
-        // Determine which team scored
-        bool playerOneScored = goal.name.Contains("PlayerTwoGoal");
-        bool playerTwoScored = goal.name.Contains("PlayerOneGoal");
-
-        // Update score using ScoreManager
-        if (scoreManager != null)
-        {
-            scoreManager.AddScore(playerOneScored);
-        }
-
-        // Reset ball position
-        transform.position = Vector3.zero;
-        if (rb != null)
-        {
+            // Reset ball position
+            transform.position = Vector3.zero;
             rb.velocity = Vector3.zero;
         }
-
-        Debug.Log(playerOneScored ? "Player One Scores!" : "Player Two Scores!");
     }
 }

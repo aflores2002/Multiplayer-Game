@@ -1,35 +1,43 @@
 using UnityEngine;
+using TMPro;
+using Unity.Netcode;
 
-public class ScoreManager : MonoBehaviour
+public class ScoreManager : NetworkBehaviour
 {
-    private int playerOneScore = 0;
-    private int playerTwoScore = 0;
+    private NetworkVariable<int> hostScore = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Server);
+    private NetworkVariable<int> clientScore = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Server);
 
-    public void AddScore(bool playerOneScored)
+    [SerializeField] private TextMeshProUGUI hostScoreText;
+    [SerializeField] private TextMeshProUGUI clientScoreText;
+
+    private void Awake()
     {
-        if (playerOneScored)
+        hostScore.OnValueChanged += UpdateHostScoreUI;
+        clientScore.OnValueChanged += UpdateClientScoreUI;
+    }
+
+    public void AddScore(bool hostScored)
+    {
+        if (IsServer)
         {
-            playerOneScore++;
+            if (hostScored)
+            {
+                hostScore.Value++;
+            }
+            else
+            {
+                clientScore.Value++;
+            }
         }
-        else
-        {
-            playerTwoScore++;
-        }
-        DisplayScores();
     }
 
-    public int GetPlayerOneScore()
+    private void UpdateHostScoreUI(int oldScore, int newScore)
     {
-        return playerOneScore;
+        hostScoreText.text = $"Host Score: {newScore}";
     }
 
-    public int GetPlayerTwoScore()
+    private void UpdateClientScoreUI(int oldScore, int newScore)
     {
-        return playerTwoScore;
-    }
-
-    private void DisplayScores()
-    {
-        Debug.Log($"Player One: {playerOneScore} - Player Two: {playerTwoScore}");
+        clientScoreText.text = $"Client Score: {newScore}";
     }
 }
