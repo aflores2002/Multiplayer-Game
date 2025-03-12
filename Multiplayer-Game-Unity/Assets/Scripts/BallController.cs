@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class BallController : MonoBehaviour
+using Unity.Netcode;
+public class BallController : NetworkBehaviour
 {
     private Rigidbody rb;
     private ScoreManager scoreManager;

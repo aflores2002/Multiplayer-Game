@@ -1,8 +1,9 @@
+using Unity.Netcode;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public float moveSpeed = 5f;
     public KeyCode[] moveKeys;  // 0: Left, 1: Right, 2: Jump
@@ -10,10 +11,21 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private bool isGrounded;
+    private NetworkVariable<Vector3> networkedPosition = new NetworkVariable<Vector3>();
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        // Assign controls based on player
+        if (isPlayerOne)
+        {
+            moveKeys = new KeyCode[] { KeyCode.A, KeyCode.D, KeyCode.W }; // WASD for Player 1
+        }
+        else
+        {
+            moveKeys = new KeyCode[] { KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.UpArrow }; // Arrow keys for Player 2
+        }
 
         // Ensure appropriate physics setup
         if (rb != null)
@@ -28,6 +40,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner) return; // Only allow the owner to control the player
+
         // Horizontal Movement
         float horizontalInput = 0f;
         if (Input.GetKey(moveKeys[0])) // Left key
@@ -40,6 +54,12 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 movement = new Vector3(horizontalInput * moveSpeed, rb.velocity.y, 0);
             rb.velocity = movement;
+
+            // Update networked position
+            if (IsServer)
+            {
+                networkedPosition.Value = transform.position;
+            }
 
             // Jumping
             if (Input.GetKeyDown(moveKeys[2]) && isGrounded) // Jump key
