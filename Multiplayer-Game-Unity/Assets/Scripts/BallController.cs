@@ -14,9 +14,9 @@ public class BallController : NetworkBehaviour
         scoreManager = FindObjectOfType<ScoreManager>();
         if (rb != null)
         {
-            // Set appropriate physics for a ball
-            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rb.constraints = RigidbodyConstraints.FreezePositionZ;
+            rb.useGravity = true;
+            Debug.Log("Ball Rigidbody initialized with gravity enabled.");
         }
         else
         {
@@ -40,6 +40,23 @@ public class BallController : NetworkBehaviour
             // Reset ball position
             transform.position = Vector3.zero;
             rb.velocity = Vector3.zero;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Ball interaction logic
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
+            if (playerRb != null)
+            {
+                // Calculate kick direction based on player's position and ball's position
+                Vector3 kickDirection = (transform.position - collision.gameObject.transform.position).normalized;
+
+                // Apply a kick force
+                rb.AddForce(kickDirection * 10f, ForceMode.Impulse);
+            }
         }
     }
 }

@@ -4,7 +4,8 @@ using Unity.Netcode;
 public class PlayerController : NetworkBehaviour
 {
     public float moveSpeed = 5f;
-    public KeyCode[] moveKeys;  // 0: Left, 1: Right, 2: Jump
+    public float jumpForce = 1f; // Adjusted jump force
+    public KeyCode[] moveKeys;  // 0: Left, 1: Right
     public bool isPlayerOne;
 
     private Rigidbody rb;
@@ -15,20 +16,25 @@ public class PlayerController : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
+        // Log the initial jump force
+        Debug.Log("Initial jump force: " + jumpForce);
+
         // Assign controls based on player
         if (isPlayerOne)
         {
-            moveKeys = new KeyCode[] { KeyCode.A, KeyCode.D, KeyCode.W }; // WASD for Player 1
+            moveKeys = new KeyCode[] { KeyCode.A, KeyCode.D }; // WASD for Player 1
         }
         else
         {
-            moveKeys = new KeyCode[] { KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.UpArrow }; // Arrow keys for Player 2
+            moveKeys = new KeyCode[] { KeyCode.LeftArrow, KeyCode.RightArrow }; // Arrow keys for Player 2
         }
 
         // Ensure appropriate physics setup
         if (rb != null)
         {
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+            rb.useGravity = true;
+            Debug.Log("Rigidbody initialized with gravity enabled.");
         }
         else
         {
@@ -70,9 +76,11 @@ public class PlayerController : NetworkBehaviour
             }
 
             // Jumping
-            if (Input.GetKeyDown(moveKeys[2]) && isGrounded) // Jump key
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded) // Space bar for jump
             {
-                rb.AddForce(Vector3.up * 300f, ForceMode.Impulse);
+                Debug.Log("Jumping with force: " + jumpForce);
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                isGrounded = false; // Set isGrounded to false after jumping
             }
         }
     }
@@ -82,6 +90,7 @@ public class PlayerController : NetworkBehaviour
         // Check if player is grounded
         if (collision.gameObject.CompareTag("Ground"))
         {
+            Debug.Log("Grounded");
             isGrounded = true;
         }
 
@@ -105,6 +114,7 @@ public class PlayerController : NetworkBehaviour
         // Check if player left the ground
         if (collision.gameObject.CompareTag("Ground"))
         {
+            Debug.Log("Left Ground");
             isGrounded = false;
         }
     }
