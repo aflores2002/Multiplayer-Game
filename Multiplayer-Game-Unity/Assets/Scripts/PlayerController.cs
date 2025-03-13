@@ -68,11 +68,11 @@ public class PlayerController : NetworkBehaviour
             // Rotate player based on movement direction
             if (horizontalInput > 0)
             {
-                transform.rotation = Quaternion.Euler(0, 100, 0);
+                transform.rotation = Quaternion.Euler(0, 90, 0);
             }
             else if (horizontalInput < 0)
             {
-                transform.rotation = Quaternion.Euler(0, -100, 0);
+                transform.rotation = Quaternion.Euler(0, -90, 0);
             }
 
             // Jumping

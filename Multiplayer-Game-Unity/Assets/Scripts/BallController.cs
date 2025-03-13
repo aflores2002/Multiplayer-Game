@@ -8,6 +8,9 @@ public class BallController : NetworkBehaviour
     private Rigidbody rb;
     private ScoreManager scoreManager;
 
+    [SerializeField] private float kickForce = 10f; // Configurable kick force
+    [SerializeField] private float upwardAngle = 0.5f; // Configurable upward angle
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -45,17 +48,23 @@ public class BallController : NetworkBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // Ball interaction logic
-        if (collision.gameObject.CompareTag("Player"))
+        Debug.Log("Collision detected with: " + collision.gameObject.name);
+
+        // Ensure this logic runs only on the server
+        if (IsServer && collision.gameObject.CompareTag("Player"))
         {
             Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
             if (playerRb != null)
             {
-                // Calculate kick direction based on player's position and ball's position
+                // Calculate kick direction with an upward curve
                 Vector3 kickDirection = (transform.position - collision.gameObject.transform.position).normalized;
+                kickDirection += Vector3.up * upwardAngle; // Add upward force for curve
 
                 // Apply a kick force
-                rb.AddForce(kickDirection * 10f, ForceMode.Impulse);
+                rb.AddForce(kickDirection * kickForce, ForceMode.Impulse);
+
+                // Debugging: Log the force and angle
+                Debug.Log($"Ball kicked with force: {kickForce} and upward angle: {upwardAngle}");
             }
         }
     }
