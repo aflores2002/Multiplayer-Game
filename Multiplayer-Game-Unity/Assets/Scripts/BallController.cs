@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class BallController : NetworkBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody2D rb2D;
     private ScoreManager scoreManager;
 
     [SerializeField] private float kickForce = 10f; // Configurable kick force
@@ -13,21 +13,20 @@ public class BallController : NetworkBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb2D = GetComponent<Rigidbody2D>();
         scoreManager = FindObjectOfType<ScoreManager>();
-        if (rb != null)
+        if (rb2D != null)
         {
-            rb.constraints = RigidbodyConstraints.FreezePositionZ;
-            rb.useGravity = true;
-            Debug.Log("Ball Rigidbody initialized with gravity enabled.");
+            rb2D.gravityScale = 1;
+            Debug.Log("Ball Rigidbody2D initialized with gravity enabled.");
         }
         else
         {
-            Debug.LogError("No Rigidbody component found on " + gameObject.name);
+            Debug.LogError("No Rigidbody2D component found on " + gameObject.name);
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (IsServer) // Ensure scoring logic is handled on the server
         {
@@ -42,26 +41,26 @@ public class BallController : NetworkBehaviour
 
             // Reset ball position
             transform.position = Vector3.zero;
-            rb.velocity = Vector3.zero;
+            rb2D.velocity = Vector2.zero;
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Collision detected with: " + collision.gameObject.name);
 
         // Ensure this logic runs only on the server
         if (IsServer && collision.gameObject.CompareTag("Player"))
         {
-            Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
+            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
             if (playerRb != null)
             {
                 // Calculate kick direction with an upward curve
-                Vector3 kickDirection = (transform.position - collision.gameObject.transform.position).normalized;
-                kickDirection += Vector3.up * upwardAngle; // Add upward force for curve
+                Vector2 kickDirection = (transform.position - collision.gameObject.transform.position).normalized;
+                kickDirection += Vector2.up * upwardAngle; // Add upward force for curve
 
                 // Apply a kick force
-                rb.AddForce(kickDirection * kickForce, ForceMode.Impulse);
+                rb2D.AddForce(kickDirection * kickForce, ForceMode2D.Impulse);
 
                 // Debugging: Log the force and angle
                 Debug.Log($"Ball kicked with force: {kickForce} and upward angle: {upwardAngle}");

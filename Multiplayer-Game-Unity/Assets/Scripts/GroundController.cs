@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GroundController : MonoBehaviour
 {
-    private BoxCollider boxCollider;
+    private BoxCollider2D boxCollider2D;
 
     void Awake()
     {
@@ -15,23 +15,23 @@ public class GroundController : MonoBehaviour
     void EnsureCollider()
     {
         // Try to get existing collider first
-        boxCollider = GetComponent<BoxCollider>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
 
         // If no collider exists, add one
-        if (boxCollider == null)
+        if (boxCollider2D == null)
         {
-            boxCollider = gameObject.AddComponent<BoxCollider>();
+            boxCollider2D = gameObject.AddComponent<BoxCollider2D>();
         }
 
         // Null check before configuring
-        if (boxCollider != null)
+        if (boxCollider2D != null)
         {
             // Configure the collider
-            boxCollider.isTrigger = false;
+            boxCollider2D.isTrigger = false;
         }
         else
         {
-            Debug.LogError("Could not add BoxCollider to " + gameObject.name);
+            Debug.LogError("Could not add BoxCollider2D to " + gameObject.name);
         }
     }
 }

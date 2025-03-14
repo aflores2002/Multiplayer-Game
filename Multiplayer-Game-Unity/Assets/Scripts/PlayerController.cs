@@ -8,13 +8,13 @@ public class PlayerController : NetworkBehaviour
     public KeyCode[] moveKeys;  // 0: Left, 1: Right
     public bool isPlayerOne;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb2D;
     private bool isGrounded;
-    private NetworkVariable<Vector3> networkedPosition = new NetworkVariable<Vector3>();
+    private NetworkVariable<Vector2> networkedPosition = new NetworkVariable<Vector2>();
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb2D = GetComponent<Rigidbody2D>();
 
         // Log the initial jump force
         Debug.Log("Initial jump force: " + jumpForce);
@@ -30,15 +30,15 @@ public class PlayerController : NetworkBehaviour
         }
 
         // Ensure appropriate physics setup
-        if (rb != null)
+        if (rb2D != null)
         {
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
-            rb.useGravity = true;
-            Debug.Log("Rigidbody initialized with gravity enabled.");
+            rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb2D.gravityScale = 1;
+            Debug.Log("Rigidbody2D initialized with gravity enabled.");
         }
         else
         {
-            Debug.LogError("No Rigidbody component found on " + gameObject.name);
+            Debug.LogError("No Rigidbody2D component found on " + gameObject.name);
         }
     }
 
@@ -54,10 +54,10 @@ public class PlayerController : NetworkBehaviour
             horizontalInput = 1f;
 
         // Move the player
-        if (rb != null)
+        if (rb2D != null)
         {
-            Vector3 movement = new Vector3(horizontalInput * moveSpeed, rb.velocity.y, 0);
-            rb.velocity = movement;
+            Vector2 movement = new Vector2(horizontalInput * moveSpeed, rb2D.velocity.y);
+            rb2D.velocity = movement;
 
             // Update networked position
             if (IsServer)
@@ -68,24 +68,24 @@ public class PlayerController : NetworkBehaviour
             // Rotate player based on movement direction
             if (horizontalInput > 0)
             {
-                transform.rotation = Quaternion.Euler(0, 90, 0);
+                transform.rotation = Quaternion.Euler(0, 0, 0);
             }
             else if (horizontalInput < 0)
             {
-                transform.rotation = Quaternion.Euler(0, -90, 0);
+                transform.rotation = Quaternion.Euler(0, 180, 0);
             }
 
             // Jumping
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded) // Space bar for jump
             {
                 Debug.Log("Jumping with force: " + jumpForce);
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 isGrounded = false; // Set isGrounded to false after jumping
             }
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         // Check if player is grounded
         if (collision.gameObject.CompareTag("Ground"))
@@ -97,19 +97,19 @@ public class PlayerController : NetworkBehaviour
         // Ball kicking logic
         if (collision.gameObject.CompareTag("Ball"))
         {
-            Rigidbody ballRb = collision.gameObject.GetComponent<Rigidbody>();
+            Rigidbody2D ballRb = collision.gameObject.GetComponent<Rigidbody2D>();
             if (ballRb != null)
             {
                 // Calculate kick direction based on player's position and ball's position
-                Vector3 kickDirection = (collision.gameObject.transform.position - transform.position).normalized;
+                Vector2 kickDirection = (collision.gameObject.transform.position - transform.position).normalized;
 
                 // Apply a kick force
-                ballRb.AddForce(kickDirection * 10f, ForceMode.Impulse);
+                ballRb.AddForce(kickDirection * 10f, ForceMode2D.Impulse);
             }
         }
     }
 
-    void OnCollisionExit(Collision collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
         // Check if player left the ground
         if (collision.gameObject.CompareTag("Ground"))
