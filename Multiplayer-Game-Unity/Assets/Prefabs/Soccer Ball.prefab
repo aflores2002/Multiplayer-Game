@@ -123,8 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac15b88d05f84aafa659350fe336b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kickForce: 1
-  upwardAngle: 10
+  kickForce: 10
+  upwardAngle: 1
 --- !u!54 &2297546031232707167
 Rigidbody:
   m_ObjectHideFlags: 0
