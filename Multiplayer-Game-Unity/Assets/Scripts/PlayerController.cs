@@ -56,8 +56,8 @@ public class PlayerController : NetworkBehaviour
         // Move the player
         if (rb2D != null)
         {
-            Vector2 movement = new Vector2(horizontalInput * moveSpeed, rb2D.velocity.y);
-            rb2D.velocity = movement;
+            Vector2 movement = new Vector2(horizontalInput * moveSpeed, rb2D.linearVelocity.y);
+            rb2D.linearVelocity = movement;
 
             // Update networked position
             if (IsServer)

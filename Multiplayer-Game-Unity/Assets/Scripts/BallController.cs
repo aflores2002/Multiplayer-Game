@@ -41,7 +41,7 @@ public class BallController : NetworkBehaviour
 
             // Reset ball position
             transform.position = Vector3.zero;
-            rb2D.velocity = Vector2.zero;
+            rb2D.linearVelocity = Vector2.zero;
         }
     }
 
