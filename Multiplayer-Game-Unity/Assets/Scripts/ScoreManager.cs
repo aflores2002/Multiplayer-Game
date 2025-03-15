@@ -33,11 +33,11 @@ public class ScoreManager : NetworkBehaviour
 
     private void UpdateHostScoreUI(int oldScore, int newScore)
     {
-        hostScoreText.text = $"Host Score: {newScore}";
+        hostScoreText.text = $"{newScore}";
     }
 
     private void UpdateClientScoreUI(int oldScore, int newScore)
     {
-        clientScoreText.text = $"Client Score: {newScore}";
+        clientScoreText.text = $"{newScore}";
     }
 }
