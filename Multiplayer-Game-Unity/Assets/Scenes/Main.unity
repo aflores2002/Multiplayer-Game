@@ -566,8 +566,8 @@ GameObject:
   - component: {fileID: 146997735}
   - component: {fileID: 146997734}
   m_Layer: 0
-  m_Name: Post (3)
-  m_TagString: Untagged
+  m_Name: TopPost L
+  m_TagString: TopPost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3633,8 +3633,8 @@ GameObject:
   - component: {fileID: 680876850}
   - component: {fileID: 680876851}
   m_Layer: 0
-  m_Name: Post (3)
-  m_TagString: Untagged
+  m_Name: TopPost R
+  m_TagString: TopPost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8524,6 +8524,7 @@ MonoBehaviour:
   whistleSound: {fileID: 8300000, guid: 9ec58838847b340a1b84d32b8e2d22ef, type: 3}
   cheerSound: {fileID: 8300000, guid: b5598c82249b74fceae4e9c624eabcf5, type: 3}
   booSound: {fileID: 8300000, guid: 6ff2512cab3444e3baa6a022877e6603, type: 3}
+  topPostSound: {fileID: 8300000, guid: a51a47b9446bb4122ad4f3d56e70cf30, type: 3}
 --- !u!4 &1625249498
 Transform:
   m_ObjectHideFlags: 0
@@ -8533,7 +8534,7 @@ Transform:
   m_GameObject: {fileID: 1625249495}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.7730973, y: 2.1657653, z: 0.03873204}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip whistleSound;
     public AudioClip cheerSound;
     public AudioClip booSound;
+    public AudioClip topPostSound;
 
     private static AudioManager instance;
     public static AudioManager Instance
@@ -140,6 +141,14 @@ public class AudioManager : MonoBehaviour
         if (footstepsSource != null)
         {
             footstepsSource.Stop();
+        }
+    }
+
+    public void PlayTopPostSound()
+    {
+        if (topPostSound != null)
+        {
+            sfxSource.PlayOneShot(topPostSound);
         }
     }
 }

@@ -57,6 +57,11 @@ public class BallController : NetworkBehaviour
             AudioManager.Instance.PlayBounceSound(); // Play bounce sound
         }
 
+        if (collision.gameObject.CompareTag("TopPost"))
+        {
+            AudioManager.Instance.PlayTopPostSound(); // Play top post sound
+        }
+
         // Ensure this logic runs only on the server
         if (IsServer && collision.gameObject.CompareTag("Player"))
         {
