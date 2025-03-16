@@ -53,6 +53,19 @@ public class PlayerController : NetworkBehaviour
         else if (Input.GetKey(moveKeys[1])) // Right key
             horizontalInput = 1f;
 
+        // Play walk sound if moving and grounded
+        if (horizontalInput != 0 && isGrounded)
+        {
+            if (!AudioManager.Instance.footstepsSource.isPlaying)
+            {
+                AudioManager.Instance.PlayWalkSound(); // Play walk sound
+            }
+        }
+        else
+        {
+            AudioManager.Instance.StopFootsteps(); // Stop walk sound
+        }
+
         // Move the player
         if (rb2D != null)
         {
