@@ -9,7 +9,7 @@ Soccer Heads is a 2D multiplayer pvp soccer game created in Unity
 ## Installation
 
 - Download the project from GitHub 
-- Use Unity to open the project and explore the scenes and scripts
+- Use Unity Editor Version 6000.0.42f1 to open the project and explore the scenes and scripts
 - Test the game locally through Multiplayer Play Mode to experience the multiplayer features
 
 ## Key Components
