@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kickForce: 10
-  upwardAngle: 1.5
+  upwardAngle: 1.6
 --- !u!50 &6489080477909846529
 Rigidbody2D:
   serializedVersion: 5
