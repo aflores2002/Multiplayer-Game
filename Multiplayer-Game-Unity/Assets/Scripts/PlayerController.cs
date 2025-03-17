@@ -8,12 +8,14 @@ public class PlayerController : NetworkBehaviour
     public KeyCode[] moveKeys = new KeyCode[] { KeyCode.A, KeyCode.D }; // Default keys
 
     private Rigidbody2D rb2D;
+    private Animator animator;
     private bool isGrounded;
     private NetworkVariable<Vector2> networkedPosition = new NetworkVariable<Vector2>();
 
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
 
         // Log the initial jump force
         Debug.Log("Initial jump force: " + jumpForce);
@@ -44,6 +46,20 @@ public class PlayerController : NetworkBehaviour
 
         // Debug log for input
         Debug.Log($"Player {gameObject.name} horizontal input: {horizontalInput}");
+
+        // Set animation parameters
+        if (animator != null)
+        {
+            animator.SetBool("isRunning", horizontalInput != 0);
+
+            // Jumping
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {
+                Debug.Log("Jumping with force: " + jumpForce);
+                rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                isGrounded = false; // Set isGrounded to false after jumping
+            }
+        }
 
         // Play walk sound if moving and grounded
         if (horizontalInput != 0 && isGrounded)
@@ -78,14 +94,6 @@ public class PlayerController : NetworkBehaviour
             else if (horizontalInput < 0)
             {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-            }
-
-            // Jumping
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded) // Space bar for jump
-            {
-                Debug.Log("Jumping with force: " + jumpForce);
-                rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-                isGrounded = false; // Set isGrounded to false after jumping
             }
         }
     }
