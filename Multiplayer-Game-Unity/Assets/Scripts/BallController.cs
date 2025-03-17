@@ -33,21 +33,34 @@ public class BallController : NetworkBehaviour
             if (other.CompareTag("RightGoal"))
             {
                 scoreManager.AddScore(false); // Client scores
+                AudioManager.Instance.PlayBooSound(); // Play boo sound
             }
             else if (other.CompareTag("LeftGoal"))
             {
                 scoreManager.AddScore(true); // Host scores
+                AudioManager.Instance.PlayCheerSound(); // Play cheer sound
             }
 
             // Reset ball position
             transform.position = Vector3.zero;
             rb2D.linearVelocity = Vector2.zero;
+            AudioManager.Instance.PlayWhistleSound(); // Play whistle sound
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Collision detected with: " + collision.gameObject.name);
+
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            AudioManager.Instance.PlayBounceSound(); // Play bounce sound
+        }
+
+        if (collision.gameObject.CompareTag("TopPost"))
+        {
+            AudioManager.Instance.PlayTopPostSound(); // Play top post sound
+        }
 
         // Ensure this logic runs only on the server
         if (IsServer && collision.gameObject.CompareTag("Player"))
@@ -64,6 +77,8 @@ public class BallController : NetworkBehaviour
 
                 // Debugging: Log the force and angle
                 Debug.Log($"Ball kicked with force: {kickForce} and upward angle: {upwardAngle}");
+
+                AudioManager.Instance.PlayKickSound(); // Play kick sound
             }
         }
     }

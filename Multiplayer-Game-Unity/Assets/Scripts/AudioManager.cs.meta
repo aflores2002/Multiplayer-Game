@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7bc9958ee8f0049e48abd2444740f281
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - kickSound: {fileID: 8300000, guid: 1d4716712b777401fa70e8801ff77a38, type: 3}
+  - bounceSound: {fileID: 8300000, guid: f6d4814e93e7a4c4c9ef89505c9e47a7, type: 3}
+  - walkSound: {fileID: 8300000, guid: 6af85fe4a30384457b36e0c6afa9f741, type: 3}
+  - whistleSound: {fileID: 8300000, guid: 4381ebe4c71dd457b9192829055e9c11, type: 3}
+  - cheerSound: {fileID: 8300000, guid: e93a6ba8b6f784d05bb655822d20ffc3, type: 3}
+  - booSound: {fileID: 8300000, guid: 18381d73db76443169ac48487fa4a908, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
