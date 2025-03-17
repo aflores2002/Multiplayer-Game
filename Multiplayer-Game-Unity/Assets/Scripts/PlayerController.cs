@@ -5,8 +5,7 @@ public class PlayerController : NetworkBehaviour
 {
     public float moveSpeed = 5f;
     public float jumpForce = 1f; // Adjusted jump force
-    public KeyCode[] moveKeys;  // 0: Left, 1: Right
-    public bool isPlayerOne;
+    public KeyCode[] moveKeys = new KeyCode[] { KeyCode.A, KeyCode.D }; // Default keys
 
     private Rigidbody2D rb2D;
     private bool isGrounded;
@@ -18,16 +17,6 @@ public class PlayerController : NetworkBehaviour
 
         // Log the initial jump force
         Debug.Log("Initial jump force: " + jumpForce);
-
-        // Assign controls based on player
-        if (isPlayerOne)
-        {
-            moveKeys = new KeyCode[] { KeyCode.A, KeyCode.D }; // WASD for Player 1
-        }
-        else
-        {
-            moveKeys = new KeyCode[] { KeyCode.LeftArrow, KeyCode.RightArrow }; // Arrow keys for Player 2
-        }
 
         // Ensure appropriate physics setup
         if (rb2D != null)
@@ -52,6 +41,9 @@ public class PlayerController : NetworkBehaviour
             horizontalInput = -1f;
         else if (Input.GetKey(moveKeys[1])) // Right key
             horizontalInput = 1f;
+
+        // Debug log for input
+        Debug.Log($"Player {gameObject.name} horizontal input: {horizontalInput}");
 
         // Play walk sound if moving and grounded
         if (horizontalInput != 0 && isGrounded)
