@@ -3,8 +3,8 @@ using Unity.Netcode;
 
 public class PlayerController : NetworkBehaviour
 {
-    public float moveSpeed = 5f;
-    public float jumpForce = 1f; // Adjusted jump force
+    public float moveSpeed = 5f; // Adjusts the speed of the player
+    public float jumpForce = 1f; // Adjust jump force for player
     public KeyCode[] moveKeys = new KeyCode[] { KeyCode.A, KeyCode.D }; // Default keys
 
     private Rigidbody2D rb2D;

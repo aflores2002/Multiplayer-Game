@@ -62,7 +62,7 @@ public class BallController : NetworkBehaviour
             AudioManager.Instance.PlayTopPostSound(); // Play top post sound
         }
 
-        // Ensure this logic runs only on the server
+        // Ensure logic runs only on the server
         if (IsServer && collision.gameObject.CompareTag("Player"))
         {
             Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();

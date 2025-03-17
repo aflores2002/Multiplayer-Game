@@ -2,6 +2,7 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 
+// NetworkTransformTest script from Unity guide
 public class NetworkTransformTest : NetworkBehaviour
 {
     void Update()

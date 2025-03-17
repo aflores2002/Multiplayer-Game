@@ -1,6 +1,7 @@
      using Unity.Netcode;
      using UnityEngine;
 
+     // RPC test script from Unity guide
      public class RpcTest : NetworkBehaviour
      {
          public override void OnNetworkSpawn()

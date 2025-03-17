@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
+// Manages audio playback for various sound effects in the game
 public class AudioManager : MonoBehaviour
 {
     [Header("Audio Sources")]
-    public AudioSource sfxSource;           // For one-shot effects
-    public AudioSource footstepsSource;     // Dedicated source for footsteps
-    public AudioSource fadeSource;          // Separate source for fading sounds
+    public AudioSource sfxSource;       // For one-shot effects
+    public AudioSource footstepsSource; // Dedicated source for footsteps
+    public AudioSource fadeSource;      // Separate source for fading sounds
 
     [Header("Sound Effects")]
     public AudioClip kickSound;
@@ -68,6 +69,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Plays the kick sound effect
     public void PlayKickSound()
     {
         if (kickSound != null)
@@ -76,6 +78,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Plays the bounce sound effect
     public void PlayBounceSound()
     {
         if (bounceSound != null)
@@ -84,6 +87,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Plays the walk sound effect if not already playing
     public void PlayWalkSound()
     {
         if (walkSound != null && !footstepsSource.isPlaying)
@@ -93,6 +97,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Plays the whistle sound effect
     public void PlayWhistleSound()
     {
         if (whistleSound != null)
@@ -101,16 +106,19 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Plays the cheer sound with fade in and out
     public void PlayCheerSound()
     {
         StartCoroutine(FadeInAndOut(fadeSource, cheerSound, 1.0f));
     }
 
+    // Plays the boo sound with fade in and out
     public void PlayBooSound()
     {
         StartCoroutine(FadeInAndOut(fadeSource, booSound, 1.0f));
     }
 
+    // Coroutine to fade in and out an audio clip
     private IEnumerator FadeInAndOut(AudioSource audioSource, AudioClip clip, float fadeDuration)
     {
         audioSource.clip = clip;
@@ -136,6 +144,7 @@ public class AudioManager : MonoBehaviour
         audioSource.Stop();
     }
 
+    // Stops the footsteps sound
     public void StopFootsteps()
     {
         if (footstepsSource != null)
@@ -144,6 +153,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Plays the top post sound effect
     public void PlayTopPostSound()
     {
         if (topPostSound != null)
